@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Love Proposal</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: #ffe6f0;
+      font-family: Arial, sans-serif;
+      height: 100vh;
+      overflow: hidden;
+    }
+
+    .center {
+      display: none;
+      justify-content: center;
+      align-items: center;
+      height: 100%;
+      flex-direction: column;
+      text-align: center;
+      padding: 20px;
+    }
+
+    .active {
+      display: flex;
+    }
+
+    .mail-icon {
+      font-size: 60px;
+      cursor: pointer;
+      background: white;
+      padding: 40px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      transition: transform 0.3s ease;
+    }
+
+    .mail-icon:hover {
+      transform: scale(1.1);
+    }
+
+    .box {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0,0,0,0.2);
+      max-width: 350px;
+      position: relative;
+    }
+
+    h1, h2, p {
+      color: #e91e63;
+      margin: 15px;
+    }
+
+    .btns {
+      margin-top: 20px;
+    }
+
+    button {
+      padding: 10px 25px;
+      border: none;
+      border-radius: 30px;
+      font-size: 16px;
+      cursor: pointer;
+      transition: 0.3s ease;
+    }
+
+    #yesBtn {
+      background-color: #4caf50;
+      color: white;
+      margin-right: 15px;
+    }
+
+    #noBtn {
+      background-color: #f44336;
+      color: white;
+    }
+
+    .heart {
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: red;
+      transform: rotate(45deg);
+      animation: fall 5s linear infinite;
+      top: -20px;
+    }
+
+    .heart::before, .heart::after {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      background: red;
+      border-radius: 50%;
+    }
+
+    .heart::before {
+      top: -10px;
+      left: 0;
+    }
+
+    .heart::after {
+      left: -10px;
+      top: 0;
+    }
+
+    @keyframes fall {
+      to {
+        transform: translateY(110vh) rotate(360deg);
+        opacity: 0;
+      }
+    }
+
+    audio {
+      display: none;
+    }
+
+    .nextBtn {
+      margin-top: 25px;
+      background: #e91e63;
+      color: white;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- 🎵 Background Song -->
+  <audio id="bgMusic" loop>
+    <source src="https://files.catbox.moe/8anyhi.mp3" type="audio/mpeg" />
+  </audio>
+
+  <!-- 💕 Falling Hearts -->
+  <script>
+    for (let i = 0; i < 30; i++) {
+      let heart = document.createElement('div');
+      heart.className = 'heart';
+      heart.style.left = Math.random() * 100 + 'vw';
+      heart.style.animationDuration = (2 + Math.random() * 3) + 's';
+      document.body.appendChild(heart);
+    }
+  </script>
+
+  <!-- 📩 Mail Screen -->
+  <div class="center active" id="mail-screen">
+    <div class="mail-icon" id="openMail">📩<br><small>Click to open</small></div>
+  </div>
+
+  <!-- ❓ Do You Love Me -->
+  <div class="center" id="question-screen">
+    <div class="box">
+      <h2>Do You Love Me?</h2>
+      <div class="btns">
+        <button id="yesBtn">Yes ❤️</button>
+        <button id="noBtn">No ❌</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- 💖 I Love You Too -->
+  <div class="center" id="love-screen">
+    <div class="box">
+      <h1>I Love You Too 😘💖</h1>
+      <p>Yeh kehne ka intezaar tha bas...</p>
+      <button class="nextBtn" onclick="showPage(1)">Next ➡️</button>
+    </div>
+  </div>
+
+  <!-- ✨ Romantic Page 1 -->
+  <div class="center" id="page-1">
+    <div class="box">
+      <h2>Tere bina adhura hoon main...</h2>
+      <p>Tu hi toh meri zindagi ka sukoon hai...</p>
+      <button class="nextBtn" onclick="showPage(2)">Next ➡️</button>
+    </div>
+  </div>
+
+  <!-- ✨ Romantic Page 2 -->
+  <div class="center" id="page-2">
+    <div class="box">
+      <h2>Bas itna kehna tha...</h2>
+      <p>I just want you — Forever ❤️</p>
+    </div>
+  </div>
+
+  <!-- 💻 Script -->
+  <script>
+    const mailBtn = document.getElementById("openMail");
+    const music = document.getElementById("bgMusic");
+
+    mailBtn.addEventListener("click", () => {
+      music.play().catch(() => {});
+      showSection("question-screen");
+    });
+
+    const yesBtn = document.getElementById("yesBtn");
+    const noBtn = document.getElementById("noBtn");
+
+    yesBtn.addEventListener("click", () => {
+      showSection("love-screen");
+    });
+
+    // Move No button endlessly
+    function moveButton() {
+      const x = Math.random() * (window.innerWidth - noBtn.offsetWidth - 50);
+      const y = Math.random() * (window.innerHeight - noBtn.offsetHeight - 50);
+      noBtn.style.position = "absolute";
+      noBtn.style.left = `${x}px`;
+      noBtn.style.top = `${y}px`;
+    }
+
+    noBtn.addEventListener("mouseover", moveButton);
+    noBtn.addEventListener("touchstart", moveButton);
+
+    // Section navigation
+    function showSection(id) {
+      document.querySelectorAll(".center").forEach(el => el.classList.remove("active"));
+      document.getElementById(id).classList.add("active");
+    }
+
+    function showPage(num) {
+      showSection(`page-${num}`);
+    }
+  </script>
+
+</body>
+</html>
